@@ -18,10 +18,9 @@ function required (v) {
 </script>
 
 <template>
-  <div style="height: calc(100vh - 64px);">
-    <v-row  align="center" justify="center" class="fill-height">
-      <v-col cols="12" sm="3">
-        <v-card class="px-6 py-8" rounded="xl">
+  <v-container class="fill-height align-center justify-center ">
+
+        <v-card class="px-6 py-8" rounded="xl" min-width="600">
           <v-card-title class="text-center mb-5">
             <h2>登录</h2>
           </v-card-title>
@@ -67,9 +66,7 @@ function required (v) {
             </v-btn>
           </v-form>
         </v-card>
-      </v-col>
-    </v-row>
-  </div>
+  </v-container>
 </template>
 
 <style scoped>

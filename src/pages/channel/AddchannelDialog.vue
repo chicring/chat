@@ -1,9 +1,16 @@
 <script setup lang="ts">
 
+import {ref} from "vue";
+import {Channel_name} from './Channel'
+
+
+const channels = ref(Channel_name)
+
 </script>
 
 <template>
   <div class="text-center">
+
     <v-btn-group
       color="primary"
       density="comfortable"
@@ -40,21 +47,36 @@
               <v-card-text>
                 <v-select
                   clearable
-                  chips
                   label="渠道类型"
-                  :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                  :items="channels"
+                  item-title="name"
+                  item-value="value"
+                  return-object
                   variant="outlined"
                   hide-details
                   rounded="lg"
                   class="mb-4"
-                ></v-select>
+                >
+                  
+                  <template v-slot:item="{ props, item }">
+
+                    <v-list-item v-bind="props">
+                      <template v-slot:title>
+                        <strong v-bind="props">{{item.raw.name}}</strong>
+                      </template>
+
+                      <template v-slot:append>
+                        <component v-bind="props" :is="item.raw.iconComponents"></component>
+                      </template>
+                    </v-list-item>
+                  </template>
+                </v-select>
 
                 <v-text-field
                   label="渠道名称"
                   hide-details
                   variant="outlined"
                   rounded="lg"
-
                   class="mb-4"
                 >
                 </v-text-field>
