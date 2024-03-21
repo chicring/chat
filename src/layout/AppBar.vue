@@ -1,0 +1,54 @@
+<script setup lang="ts">
+import { useTheme } from 'vuetify'
+import {ref} from "vue";
+
+const theme = useTheme()
+const darkMode = ref(false)
+
+
+function toggleTheme () {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+  darkMode.value = !darkMode.value
+}
+</script>
+
+<template>
+  <v-app-bar
+             absolute
+             flat
+             app
+  >
+
+    <v-app-bar-title>
+      On Chat
+      <v-app-bar-nav-icon class="ml-2"></v-app-bar-nav-icon>
+    </v-app-bar-title>
+
+
+
+    <v-switch
+        v-model="darkMode"
+        false-icon="mdi-weather-sunny"
+        true-icon="mdi-weather-night"
+        @click="toggleTheme"
+        hide-details
+        inset
+      >
+    </v-switch>
+
+
+
+    <v-btn
+      class="ml-2"
+      min-width="0"
+      icon="mdi-account"
+      to="/login"
+    >
+      <v-icon></v-icon>
+    </v-btn>
+  </v-app-bar>
+</template>
+
+<style scoped>
+
+</style>
