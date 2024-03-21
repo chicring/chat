@@ -1,6 +1,11 @@
 <script setup lang="ts">
 
 import AddchannelDialog from "./AddchannelDialog.vue";
+import Google from "../../assets/icon/Google.vue";
+import MoonShot from "../../assets/icon/MoonShot.vue";
+import OpenAI from "../../assets/icon/OpenAI.vue";
+import Qwen from "../../assets/icon/Qwen.vue";
+import ZhiPu from "../../assets/icon/ZhiPu.vue";
 </script>
 
 <template>
@@ -12,7 +17,11 @@ import AddchannelDialog from "./AddchannelDialog.vue";
       <AddchannelDialog></AddchannelDialog>
     </div>
 
-
+    <Google></Google>
+    <MoonShot></MoonShot>
+    <OpenAI></OpenAI>
+    <Qwen></Qwen>
+    <ZhiPu></ZhiPu>
     <v-row align="center">
       <v-col cols="12" md="2">
         <v-select

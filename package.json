@@ -12,7 +12,8 @@
     "core-js": "^3.34.0",
     "roboto-fontface": "*",
     "vue": "^3.4.21",
-    "vuetify": "^3.5.8"
+    "vuetify": "^3.5.8",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@babel/types": "^7.24.0",

@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-app>
 
     <AppBar></AppBar>
 
@@ -7,11 +7,11 @@
 
     <View></View>
 
-  </v-layout>
+  </v-app>
 </template>
 
 <script lang="ts" setup>
-import View from "../layout/View.vue";
-import AppBar from "../layout/AppBar.vue";
-import Drawer from "../layout/Drawer.vue";
+import View from "./layout/View.vue";
+import AppBar from "./layout/AppBar.vue";
+import Drawer from "./layout/Drawer.vue";
 </script>

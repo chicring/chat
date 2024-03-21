@@ -13,18 +13,10 @@ function toggleTheme () {
 </script>
 
 <template>
-  <v-app-bar
-             absolute
-             flat
-             app
-  >
+  <v-app-bar flat>
+    <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-    <v-app-bar-title>
-      On Chat
-      <v-app-bar-nav-icon class="ml-2"></v-app-bar-nav-icon>
-    </v-app-bar-title>
-
-
+    <v-app-bar-title>On Chat</v-app-bar-title>
 
     <v-switch
         v-model="darkMode"
@@ -36,16 +28,14 @@ function toggleTheme () {
       >
     </v-switch>
 
-
-
     <v-btn
       class="ml-2"
       min-width="0"
       icon="mdi-account"
       to="/login"
     >
-      <v-icon></v-icon>
     </v-btn>
+
   </v-app-bar>
 </template>
 
