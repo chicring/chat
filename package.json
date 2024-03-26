@@ -8,7 +8,10 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@alova/adapter-axios": "^1.2.3",
     "@mdi/font": "^7.4.47",
+    "axios": "^1.6.8",
+    "chart.js": "^4.4.2",
     "core-js": "^3.34.0",
     "roboto-fontface": "*",
     "vue": "^3.4.21",

@@ -24,6 +24,11 @@ const routes = [
         component: () => import('@/pages/channel/Channel.vue'),
       },
       {
+        name: 'apikey',
+        path: 'apikey',
+        component: () => import('@/pages/apikeys/APIkeys.vue'),
+      },
+      {
         name: 'logs',
         path: 'logs',
         component: () => import('@/pages/log/Logs.vue'),

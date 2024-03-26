@@ -19,6 +19,8 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/apikeys/AddKeyDialog': RouteRecordInfo<'/apikeys/AddKeyDialog', '/apikeys/AddKeyDialog', Record<never, never>, Record<never, never>>,
+    '/apikeys/APIkeys': RouteRecordInfo<'/apikeys/APIkeys', '/apikeys/APIkeys', Record<never, never>, Record<never, never>>,
     '/channel/AddchannelDialog': RouteRecordInfo<'/channel/AddchannelDialog', '/channel/AddchannelDialog', Record<never, never>, Record<never, never>>,
     '/channel/Channel': RouteRecordInfo<'/channel/Channel', '/channel/Channel', Record<never, never>, Record<never, never>>,
     '/Dashboard': RouteRecordInfo<'/Dashboard', '/Dashboard', Record<never, never>, Record<never, never>>,
@@ -28,6 +30,7 @@ declare module 'vue-router/auto-routes' {
     '/log/Logs': RouteRecordInfo<'/log/Logs', '/log/Logs', Record<never, never>, Record<never, never>>,
     '/Login': RouteRecordInfo<'/Login', '/Login', Record<never, never>, Record<never, never>>,
     '/overview/Overview': RouteRecordInfo<'/overview/Overview', '/overview/Overview', Record<never, never>, Record<never, never>>,
+    '/overview/StackedBarChart': RouteRecordInfo<'/overview/StackedBarChart', '/overview/StackedBarChart', Record<never, never>, Record<never, never>>,
     '/setting/Settings': RouteRecordInfo<'/setting/Settings', '/setting/Settings', Record<never, never>, Record<never, never>>,
   }
 }

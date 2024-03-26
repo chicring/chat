@@ -1,58 +1,30 @@
 <script setup lang="ts">
 
 import AddchannelDialog from "./AddchannelDialog.vue";
-import Google from "../../assets/icon/Google.vue";
-import MoonShot from "../../assets/icon/MoonShot.vue";
-import OpenAI from "../../assets/icon/OpenAI.vue";
-import Qwen from "../../assets/icon/Qwen.vue";
-import ZhiPu from "../../assets/icon/ZhiPu.vue";
+
 </script>
 
 <template>
   <v-container>
 
-    <div class="d-flex justify-space-between">
-      <p>渠道</p>
+    <v-card flat rounded="xl">
+      <v-card-title>
+        <h3>渠道</h3>
+      </v-card-title>
 
-      <AddchannelDialog></AddchannelDialog>
-    </div>
+      <v-card-subtitle>
+        优先级：
+        1. 优先级越大，越优先使用
+        2. 相同优先级下：创建时间越早，越优先使用
 
-    <Google></Google>
-    <MoonShot></MoonShot>
-    <OpenAI></OpenAI>
-    <Qwen></Qwen>
-    <ZhiPu></ZhiPu>
-    <v-row align="center">
-      <v-col cols="12" md="2">
-        <v-select
-          clearable
-          chips
-          label="渠道类型"
-          :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-          hide-details
-        ></v-select>
-      </v-col>
+        代理：
+        1. 必须在启动应用的时候设置代理才能启用
+      </v-card-subtitle>
 
-      <v-col cols="12" md="2">
-        <v-text-field
-          label="渠道名称"
-          hide-details
-        >
-        </v-text-field>
-      </v-col>
-
-      <v-col cols="12" md="2">
-        <v-text-field
-          label="站点"
-          hide-details
-        >
-        </v-text-field>
-      </v-col>
-
-      <v-col>
-        <v-btn>添加渠道</v-btn>
-      </v-col>
-    </v-row>
+      <v-card-actions class="justify-end">
+        <AddchannelDialog></AddchannelDialog>
+      </v-card-actions>
+    </v-card>
   </v-container>
 </template>
 

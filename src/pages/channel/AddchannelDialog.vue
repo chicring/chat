@@ -2,9 +2,11 @@
 
 import {ref} from "vue";
 import {Channel_name} from './Channel'
-
+import {Model} from './Model'
 
 const channels = ref(Channel_name)
+
+const selectModels = ref()
 
 </script>
 
@@ -48,6 +50,7 @@ const channels = ref(Channel_name)
                 <v-select
                   clearable
                   label="渠道类型"
+                  color="primary"
                   :items="channels"
                   item-title="name"
                   item-value="value"
@@ -57,7 +60,7 @@ const channels = ref(Channel_name)
                   rounded="lg"
                   class="mb-4"
                 >
-                  
+
                   <template v-slot:item="{ props, item }">
 
                     <v-list-item v-bind="props">
@@ -76,6 +79,7 @@ const channels = ref(Channel_name)
                   label="渠道名称"
                   hide-details
                   variant="outlined"
+                  color="primary"
                   rounded="lg"
                   class="mb-4"
                 >
@@ -86,31 +90,57 @@ const channels = ref(Channel_name)
                   hide-details
                   variant="outlined"
                   rounded="lg"
-
+                  color="primary"
                   class="mb-4"
                 >
                 </v-text-field>
 
-                <v-select
-                  clearable
-                  chips
-                  label="添加模型"
-                  :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                  variant="outlined"
-                  hide-details
-                  rounded="lg"
 
-                  class="mb-4"
-                ></v-select>
+                <v-select
+                          v-model="selectModels"
+                          :items="Model"
+                          clearable
+                          chips
+                          label="添加模型"
+                          variant="outlined"
+                          hide-details
+                          color="primary"
+                          rounded="lg"
+                          class="mb-4"
+                          multiple
+                >
+                  <template #item="data">
+                    <v-list-subheader v-if="data.props.header">
+                      {{ data.props.header }}
+                    </v-list-subheader>
+                    <v-divider v-else-if="data.props.divider" />
+                    <v-list-item v-else v-bind="data.props">
+<!--                      <v-list-item-subtitle>-->
+<!--                        {{ data.item.title }}-->
+<!--                      </v-list-item-subtitle>-->
+                    </v-list-item>
+                  </template>
+                </v-select>
 
                 <v-text-field
                   label="密钥"
                   hide-details
+                  color="primary"
                   rounded="lg"
-
+                  class="mb-4"
                   variant="outlined"
                 >
                 </v-text-field>
+                <v-text-field
+                  label="优先级"
+                  hide-details
+                  color="primary"
+                  rounded="lg"
+                  variant="outlined"
+                >
+                </v-text-field>
+
+                <v-checkbox label="启用代理" color="primary"></v-checkbox>
 
 
               </v-card-text>

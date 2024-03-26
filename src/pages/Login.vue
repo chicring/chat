@@ -1,16 +1,31 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import {nextTick, ref} from 'vue'
+import { doLogin  } from "../api/methods/user";
+import {store} from "../store/store";
+import router from "../router";
 
 const form = ref(false)
-const account = ref(null)
-const password = ref(null)
+const account = ref()
+const password = ref()
 const loading = ref(false)
 
-function onSubmit () {
+const onSubmit = () => {
   if (!form.value) return
   loading.value = true
-  setTimeout(() => (loading.value = false), 2000)
+
+  doLogin(account.value, password.value).then(res =>{
+    localStorage.setItem('token', res.token)
+    store.actions.setToken(store)
+    loading.value = false
+
+    nextTick(() => {
+      router.replace('/')
+    })
+
+  })
+
 }
+
 function required (v) {
   return !!v || '不能为空'
 }
@@ -20,7 +35,8 @@ function required (v) {
 <template>
   <v-container class="fill-height align-center justify-center ">
 
-        <v-card class="px-6 py-8" rounded="xl" min-width="600">
+      <v-col cols="12" md="6">
+        <v-card class="px-6 py-8" rounded="xl">
           <v-card-title class="text-center mb-5">
             <h2>登录</h2>
           </v-card-title>
@@ -66,6 +82,7 @@ function required (v) {
             </v-btn>
           </v-form>
         </v-card>
+      </v-col>
   </v-container>
 </template>
 
