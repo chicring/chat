@@ -7,5 +7,12 @@
 </template>
 
 <script lang="ts" setup>
-  //
+
+  import {onMounted} from "vue";
+  import {store} from "./store/store";
+
+  onMounted(() => {
+    store.actions.setToken(store)
+    store.actions.setUserInfo(store)
+  })
 </script>

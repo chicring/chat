@@ -3,11 +3,42 @@
 import {ref} from "vue";
 import {Channel_name} from './Channel'
 import {Model} from './Model'
+import {addChannel} from "../../api/methods/channel";
+import {success} from "../../components/ToastMessage/Message";
 
 const channels = ref(Channel_name)
 
-const selectModels = ref()
+const newChannel = ref({
+  name: '',
+  type: 'openai',
+  baseUrl: '',
+  models: '',
+  apiKey: '',
+  priority: 0,
+  enableProxy: false
+})
 
+const selectedModels = ref([])
+const emit = defineEmits(['created']);
+
+function submit() {
+  newChannel.value.models = JSON.stringify(selectedModels.value.reduce((acc, item) => {
+    acc[item] = item;
+    return acc;
+  }, {}));
+
+  addChannel(newChannel.value).then(() => {
+    emit('created')
+    success('添加成功')
+    console.log('success')
+  }).catch(() => {
+    console.log('error')
+  }).finally(
+    () => {
+      selectedModels.value = [];
+    }
+  )
+}
 </script>
 
 <template>
@@ -48,13 +79,13 @@ const selectModels = ref()
 
               <v-card-text>
                 <v-select
+                  v-model="newChannel.type"
                   clearable
                   label="渠道类型"
                   color="primary"
                   :items="channels"
                   item-title="name"
-                  item-value="value"
-                  return-object
+                  item-value="type"
                   variant="outlined"
                   hide-details
                   rounded="lg"
@@ -73,6 +104,12 @@ const selectModels = ref()
                       </template>
                     </v-list-item>
                   </template>
+
+<!--                  <template #item="data">-->
+<!--                    <v-list-item v-bind="data.props">-->
+<!--                      -->
+<!--                    </v-list-item>-->
+<!--                  </template>-->
                 </v-select>
 
                 <v-text-field
@@ -82,6 +119,7 @@ const selectModels = ref()
                   color="primary"
                   rounded="lg"
                   class="mb-4"
+                  v-model="newChannel.name"
                 >
                 </v-text-field>
 
@@ -92,12 +130,13 @@ const selectModels = ref()
                   rounded="lg"
                   color="primary"
                   class="mb-4"
+                  v-model="newChannel.baseUrl"
                 >
                 </v-text-field>
 
 
                 <v-select
-                          v-model="selectModels"
+                          v-model="selectedModels"
                           :items="Model"
                           clearable
                           chips
@@ -129,6 +168,7 @@ const selectModels = ref()
                   rounded="lg"
                   class="mb-4"
                   variant="outlined"
+                  v-model="newChannel.apiKey"
                 >
                 </v-text-field>
                 <v-text-field
@@ -137,10 +177,11 @@ const selectModels = ref()
                   color="primary"
                   rounded="lg"
                   variant="outlined"
+                  v-model="newChannel.priority"
                 >
                 </v-text-field>
 
-                <v-checkbox label="启用代理" color="primary"></v-checkbox>
+                <v-checkbox label="启用代理" color="primary" v-model="newChannel.enableProxy"></v-checkbox>
 
 
               </v-card-text>
@@ -161,7 +202,7 @@ const selectModels = ref()
                   rounded="xl"
                   text="提交"
                   variant="flat"
-                  @click="isActive.value = false"
+                  @click="submit();isActive.value = false"
                 ></v-btn>
               </v-card-actions>
             </v-card>

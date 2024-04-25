@@ -6,8 +6,9 @@ export const store =reactive( {
 
     isDrawerOpen : true,
 
-    userInfo: {
+    user: {
       token: '',
+      info: {}
     },
 
   },
@@ -18,12 +19,25 @@ export const store =reactive( {
     setToken(store) {
       const token = localStorage.getItem('token');
       if (token) {
-        store.state.userInfo.token = token;
+        store.state.user.token = token;
       }
     },
 
-    LogOut(){
+    // 设置用户信息
+    setUserInfo(store) {
+      const userInfo = localStorage.getItem('user');
+      if (userInfo) {
+        store.state.user.info = JSON.parse(userInfo);
+      }
+      console.log(store.state.user.info)
+    },
+
+    LogOut(store){
       //退出操作
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      store.state.user.token = '';
+      store.state.user.info = {};
     }
   }
 

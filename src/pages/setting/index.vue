@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import {store} from "../../store/store";
 </script>
 
 <template>
@@ -13,17 +13,17 @@
             <v-divider></v-divider>
 
             <v-card-text>
-              <v-card-subtitle class="text-end">注册时间：2024-1-16</v-card-subtitle>
+              <v-card-subtitle class="text-end">注册时间：{{store.state.user.info.registerDate}}</v-card-subtitle>
 
               <v-row no-gutters>
                 <v-col cols="12">
-                  <v-text-field color="outline" bg-color="surface-variant" rounded="lg" variant="outlined" label="用户名" ></v-text-field>
+                  <v-text-field v-model="store.state.user.info.username" color="outline" bg-color="surface-variant" rounded="lg" variant="outlined" label="用户名" ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field color="outline" bg-color="surface-variant" rounded="lg" variant="outlined" label="密码"></v-text-field>
+                  <v-text-field color="outline" bg-color="surface-variant" rounded="lg" variant="outlined" label="密码" disabled></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field color="outline" bg-color="surface-variant" rounded="lg" variant="outlined" label="邮箱"></v-text-field>
+                  <v-text-field v-model="store.state.user.info.email" color="outline" bg-color="surface-variant" rounded="lg" variant="outlined" label="邮箱"></v-text-field>
                 </v-col>
               </v-row>
             </v-card-text>

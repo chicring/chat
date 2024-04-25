@@ -3,13 +3,17 @@
 
 import {ref} from "vue";
 import {store} from "../../store/store";
+import {getEmailAvatar} from "../../util/EmailAvatar";
 
 const items = ref([
   { title: "概况", icon: "mdi-view-dashboard", to: "/" },
-  { title: "API keys", icon: "mdi-key", to: "apikey" },
-  { title: "渠道", icon: "mdi-source-branch", to: "channel" },
-  { title: "日志", icon: "mdi-file-document-outline", to: "logs" },
-  { title: "设置", icon: "mdi-cog", to: "setting" },
+  { title: "API keys", icon: "mdi-key", to: "/apikey" },
+  { title: "渠道", icon: "mdi-source-branch", to: "/channel" },
+  { title: "模型", icon: "mdi-tablet-cellphone", to: "/model" },
+  { title: "知识库", icon: "mdi-book", to: "/knowledge" },
+  { title: "用户管理", icon: "mdi-account ", to: "/user" },
+  { title: "日志", icon: "mdi-file-document-outline", to: "/logs" },
+  { title: "设置", icon: "mdi-cog", to: "/setting" },
 ]);
 
 const rail = ref(true)
@@ -19,14 +23,15 @@ const rail = ref(true)
 <template>
   <v-navigation-drawer v-model="store.state.isDrawerOpen"
                        floating
-                       v-if="$route.path !== '/login'"
                         :rail="rail"
                        @click="rail= false"
+                       app
   >
 
     <v-list-item
-      prepend-avatar="http://hk.hjong.cn:8089/i/2024/03/24/65ffe9b1b90db.png"
-      title="超级驼鹿"
+      class="text-center"
+      :prepend-avatar="getEmailAvatar(store.state.user.info.email)"
+      :title="store.state.user.info.username"
       nav
     >
       <template v-slot:append>
@@ -40,7 +45,7 @@ const rail = ref(true)
 
     <v-divider></v-divider>
 
-    <v-list nav >
+    <v-list nav>
       <v-list-item
         rounded="lg"
         v-for="(item, index) in items"
@@ -52,6 +57,22 @@ const rail = ref(true)
         :to="item.to"
       ></v-list-item>
     </v-list>
+
+
+    <template v-slot:append>
+      <v-card
+        color="primary-container"
+        append-icon="mdi-open-in-new"
+        class="ma-2"
+        href="https://github.com/chicring/OpenAI-Proxy-OnChat"
+        prepend-icon="mdi-github"
+        rel="noopener"
+        subtitle="github"
+        target="_blank"
+        title="OnChat on GitHub"
+      ></v-card>
+    </template>
+
   </v-navigation-drawer>
 </template>
 

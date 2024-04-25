@@ -130,5 +130,5 @@ export default createVuetify({
       myCustomDarkTheme
     }
   },
-
+  date: {}
 })

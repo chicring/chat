@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
-import {onMounted, ref} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 import {store} from "../../store/store";
+import router from "../../router";
 
 const theme = useTheme()
 const darkMode = ref(false)
@@ -11,18 +12,26 @@ function toggleTheme () {
   darkMode.value = !darkMode.value
 }
 
-onMounted(() => {
-  store.actions.setToken(store)
-})
+function logout() {
+  store.actions.LogOut(store)
+  nextTick(() => {
+    router.replace('/login')
+  })
+}
+
 </script>
 
 <template>
-  <v-app-bar flat>
+  <v-app-bar flat app>
     <v-app-bar-nav-icon @click.stop="store.state.isDrawerOpen = !store.state.isDrawerOpen" color="tertiary">
 
     </v-app-bar-nav-icon>
 
-    <v-app-bar-title>On Chat</v-app-bar-title>
+    <v-app-bar-title>
+      <v-img src="/src/assets/logo.svg" alt="Logo"
+             max-width="95"
+      ></v-img>
+    </v-app-bar-title>
 
     <v-switch
         v-model="darkMode"
@@ -35,12 +44,29 @@ onMounted(() => {
     </v-switch>
 
     <v-btn
+      v-if="!store.state.user.token"
       class="ml-2"
-      min-width="0"
-      icon="mdi-account"
       to="/login"
     >
+      <v-icon>mdi-login</v-icon>
+      <v-tooltip
+        activator="parent"
+        location="bottom"
+      >登录</v-tooltip>
     </v-btn>
+
+    <v-btn
+      v-if="store.state.user.token"
+      class="ml-2"
+      @click="logout"
+    >
+      <v-icon>mdi-logout</v-icon>
+      <v-tooltip
+        activator="parent"
+        location="bottom"
+      >退出登录</v-tooltip>
+    </v-btn>
+
 
   </v-app-bar>
 </template>

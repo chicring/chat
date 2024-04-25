@@ -1,10 +1,22 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
+import {createApiKey} from "../../api/methods/apikey";
+import {success} from "../../components/ToastMessage/Message";
 
+const name = ref('')
+const date = ref(Date.now())
+const emit = defineEmits(['created']);
+function submit() {
+  console.log(date.value)
 
-const showdate = ref(false)
-const date = ref()
+  createApiKey(name.value, date.value).then(() => {
+    success('创建成功')
+    emit('created')
+  }).catch(() => {
+    console.log('创建失败')
+  })
+}
 </script>
 
 <template>
@@ -40,7 +52,6 @@ const date = ref()
 
               <v-card-text>
 
-
                 <v-text-field
                   label="渠道名称"
                   hide-details
@@ -48,40 +59,11 @@ const date = ref()
                   color="primary"
                   rounded="lg"
                   class="mb-4"
+                  v-model="name"
                 >
                 </v-text-field>
 
-
-                <v-text-field
-                  label="有效期"
-                  hide-details
-                  variant="outlined"
-                  color="primary"
-                  rounded="lg"
-                  class="mb-4"
-                  placeholder="单位：天"
-                  v-model="date"
-                  readonly
-                >
-                  <template v-slot:append-inner>
-                    <v-btn icon="mdi-calendar-range" variant="text" flat @click="showdate=!showdate"></v-btn>
-                  </template>
-                </v-text-field>
-
-                <v-fade-transition>
-                  <v-date-picker
-                    v-show="showdate"
-                    v-model="date"
-                    position="fixed"
-                    hide-header
-                    class="rounded-xl"
-                    bg-color="surface-variant"
-                  >
-                    <template v-slot:actions>
-                      <v-btn text="close" @click="showdate = !showdate"></v-btn>
-                    </template>
-                  </v-date-picker>
-                </v-fade-transition>
+                <TimePicker v-model="date" label="有效期" />
 
               </v-card-text>
 
@@ -101,7 +83,7 @@ const date = ref()
                   rounded="xl"
                   text="提交"
                   variant="flat"
-                  @click="isActive.value = false"
+                  @click="submit(); isActive.value = false"
                 ></v-btn>
               </v-card-actions>
             </v-card>

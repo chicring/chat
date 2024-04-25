@@ -7,8 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    404: typeof import('./src/components/404.vue')['default']
+    ConfirmDialog: typeof import('./src/components/ConfirmDialog/ConfirmDialog.vue')['default']
+    MonthSelect: typeof import('./src/components/MonthSelect/MonthSelect.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TimePicker: typeof import('./src/components/TimePicker.vue')['default']
+    ToastMessage: typeof import('./src/components/ToastMessage/ToastMessage.vue')['default']
   }
 }

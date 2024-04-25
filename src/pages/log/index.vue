@@ -17,8 +17,8 @@ const query = ref({
   "channelName": null,
   "model": null,
   "userId": null,
-  "startTime": null,
-  "endTime": null
+  "startTime": 0,
+  "endTime": 4070880000
 })
 
 const headers = [
@@ -34,7 +34,7 @@ const headers = [
   { title: '提示token', value: 'promptTokens' ,sortable: false, align: "center"},
   { title: '完成token', value: 'completionTokens' ,sortable: false, align: "center"},
   { title: '输入', value: 'inputText' ,sortable: false, align: "center"},
-  // { title: '输出', value: 'outputText' ,sortable: false},
+  { title: '输出', value: 'outputText' ,sortable: false},
   { title: 'IP', value: 'ip' , align: "center"},
   { title: '用时', value: 'consumeTime' , align: "center"},
 ]
@@ -50,7 +50,6 @@ async function loadItems({ page, itemsPerPage }) {
     myPage.value = page
     totalItems.value = totalItems.value + logs.value.length
   }
-  console.log(totalItems.value)
   loading.value = false
 }
 
@@ -76,14 +75,14 @@ function resetQuery() {
     "channelName": null,
     "model": null,
     "userId": null,
-    "startTime": null,
-    "endTime": null
+    "startTime": 189277261,
+    "endTime": 4070880000
   }
 }
 
 function getColor (consumeTime) {
-  if (consumeTime > 25) return 'red'
-  else if (consumeTime > 15) return 'orange'
+  if (consumeTime > 30) return 'red'
+  else if (consumeTime > 20) return 'orange'
   else return 'green'
 }
 </script>
@@ -116,19 +115,11 @@ function getColor (consumeTime) {
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field v-model="query.startTime" color="outline" bg-color="surface-variant" rounded="xl" variant="outlined" label="开始时间" >
-              <template v-slot:append-inner>
-                <v-btn icon="mdi-calendar-range" variant="text" flat></v-btn>
-              </template>
-            </v-text-field>
+            <TimePicker v-model="query.startTime" label="开始时间" />
           </v-col>
 
           <v-col cols="12" md="3">
-            <v-text-field v-model="query.endTime" color="outline" bg-color="surface-variant" rounded="xl" variant="outlined" label="结束时间" >
-              <template v-slot:append-inner>
-                <v-btn icon="mdi-calendar-range" variant="text" flat></v-btn>
-              </template>
-            </v-text-field>
+            <TimePicker class="rounded-xl" v-model="query.endTime" label="结束时间" />
           </v-col>
         </v-row>
         <div class="justify-end d-flex">
@@ -166,6 +157,18 @@ function getColor (consumeTime) {
         </v-chip>
       </template>
 
+      <template #item.channelType="{ value }">
+        <v-chip rounded size="small" color="primary" variant="outlined">
+          {{ value }}
+        </v-chip>
+      </template>
+
+      <template #item.model="{ value }">
+        <v-chip rounded size="small" color="primary">
+          {{ value }}
+        </v-chip>
+      </template>
+
       <template #item.createdAt="{ item }">
         <span>{{ formatDate(item.createdAt) }}</span>
       </template>
@@ -188,7 +191,6 @@ function getColor (consumeTime) {
         </span>
 
 
-
       </template>
 
       <template v-slot:item.outputText="{ value }">
@@ -197,7 +199,18 @@ function getColor (consumeTime) {
           style="max-width: 60px;"
         >
           {{value}}
+          <v-tooltip
+            activator="parent"
+            location="top"
+            close-delay="200"
+            class="font-weight-bold"
+          >
+            {{value}}
+          </v-tooltip>
         </span>
+      </template>
+      <template v-slot:no-data>
+        <span>没有数据</span>
       </template>
     </v-data-table-server>
   </v-container>

@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <v-main>
-    <v-sheet class="rounded-t-xl fill-height mx-2"  color="background-1">
+  <v-main scrollable>
+    <v-sheet class="rounded-t-xl" color="background-1" :style="{minHeight: 'calc(100vh - 64px)'}">
       <router-view />
     </v-sheet>
   </v-main>

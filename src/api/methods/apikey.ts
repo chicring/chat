@@ -9,3 +9,24 @@ export function getApiKey (){
     }
   })
 }
+
+export function createApiKey (name : string, expiresAt : number ){
+  return request({
+    url: '/apikey/create',
+    method: 'post',
+    data: {
+      name,
+      expiresAt
+    }
+  })
+}
+
+export function deleteApiKey (id : string){
+  return request({
+    url: '/apikey/delete',
+    method: 'get',
+    params: {
+      id
+    }
+  })
+}
