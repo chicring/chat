@@ -21,7 +21,7 @@ export function createApiKey (name : string, expiresAt : number ){
   })
 }
 
-export function deleteApiKey (id : string){
+export function deleteApiKey (id : number){
   return request({
     url: '/apikey/delete',
     method: 'get',

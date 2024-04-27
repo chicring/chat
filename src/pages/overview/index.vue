@@ -41,7 +41,6 @@ import UserUsageRatio from "./UserUsageRatio.vue";
       </v-col>
     </v-row>
 
-
   </v-container>
 
 </template>

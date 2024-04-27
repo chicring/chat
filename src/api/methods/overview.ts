@@ -47,3 +47,14 @@ export function getAllAvailableModels() {
     method: 'get',
   });
 }
+
+export function getUsageToken(start: number, end: number) {
+  return request({
+    url: '/overview/usage-token',
+    method: 'get',
+    params: {
+      start,
+      end
+    }
+  });
+}

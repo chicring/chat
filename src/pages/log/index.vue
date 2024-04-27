@@ -152,19 +152,25 @@ function getColor (consumeTime) {
     >
 
       <template #item.consumeTime="{ value }">
-        <v-chip :color="getColor(value)" rounded>
+        <v-chip :color="getColor(value)" rounded="lg" class="font-weight-medium" size="small" >
           {{ value }} s
         </v-chip>
       </template>
 
+      <template #item.channelName="{value}">
+        <v-chip rounded="lg" size="small"  class="font-weight-medium">
+          {{ value }}
+        </v-chip>
+      </template>
+
       <template #item.channelType="{ value }">
-        <v-chip rounded size="small" color="primary" variant="outlined">
+        <v-chip rounded="lg" size="small" color="primary" variant="outlined" class="font-weight-medium">
           {{ value }}
         </v-chip>
       </template>
 
       <template #item.model="{ value }">
-        <v-chip rounded size="small" color="primary">
+        <v-chip rounded="lg" size="small" color="primary" class="font-weight-medium">
           {{ value }}
         </v-chip>
       </template>

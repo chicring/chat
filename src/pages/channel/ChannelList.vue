@@ -21,6 +21,11 @@ onMounted(async () => {
   console.log(items.value);
 })
 
+
+function updateItem(channelId : number){
+  console.log(channelId)
+}
+
 function deleteItem(channelId : number){
   deleteChannel(channelId).then(() => {
     items.value = items.value.filter((item) => item.id !== channelId);

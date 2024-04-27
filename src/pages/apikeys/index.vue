@@ -4,11 +4,10 @@ import AddKeyDialog from "./AddKeyDialog.vue";
 import {deleteApiKey, getApiKey} from "../../api/methods/apikey";
 import {formatDate} from "../../util/formatDate";
 import {copyTextToClipboard} from "../../util/writeClipboard";
-import {error, info, success} from "../../components/ToastMessage/Message";
+import {success} from "../../components/ToastMessage/Message";
 
 
 const userKeys = ref([])
-const switchStates = reactive([]);
 
 const headers = [
   { title: 'Id', value: 'id' , align: "center"},
@@ -20,28 +19,18 @@ const headers = [
   { title: '操作', key: 'actions', sortable: false },
 ]
 
-const dialogVisible = ref(false);
-const selectedItemId = ref(null);
-function confirm(id) {
-  dialogVisible.value = true
-  selectedItemId.value = id
-}
-async function deleteItem(value) {
-  dialogVisible.value = value;
-  if (value) {
-    deleteApiKey(selectedItemId.value).then(() => {
+
+function deleteItem(id : number) {
+    deleteApiKey(id).then(() => {
       success('删除成功');
-      userKeys.value = userKeys.value.filter((item) => item.id !== selectedItemId.value);
+      userKeys.value = userKeys.value.filter((item) => item.id !== id);
     })
-  } else {
-    info('用户取消了操作');
-  }
-  dialogVisible.value = false;
 }
 
 async function refreshKeys() {
   userKeys.value = await getApiKey();
 }
+
 onMounted(async () => {
   userKeys.value = await getApiKey();
 });
@@ -50,12 +39,6 @@ onMounted(async () => {
 
 <template>
   <v-container>
-    <confirm-dialog
-      :modelValue="dialogVisible"
-      :text="{ title: '删除提示', msg: '确定要删除这项内容吗？' }"
-      @update:modelValue="deleteItem"
-    ></confirm-dialog>
-
     <v-card rounded="xl" flat>
       <v-card-title>Apikeys</v-card-title>
       <v-card-subtitle>使用API keys进行服务鉴权和使用记录</v-card-subtitle>
@@ -69,7 +52,7 @@ onMounted(async () => {
                   :headers="headers"
                   item-key="id"
     >
-      <template v-slot:item.apiKey="{ item }">
+      <template #item.apiKey="{ item }">
         <span>********</span>
         <v-btn icon="mdi-clipboard-text-multiple-outline"
                variant="text" color="primary"
@@ -79,24 +62,21 @@ onMounted(async () => {
         </v-btn>
       </template>
 
-      <template v-slot:item.enabled="{ item }">
+      <template #item.enabled="{ item }">
         <v-switch v-model="item.enabled" color="secondary" hide-details></v-switch>
       </template>
 
-      <template v-slot:item.createdAt="{ item }">
+      <template #item.createdAt="{ item }">
         <span>{{ formatDate(item.createdAt) }}</span>
       </template>
 
 
-      <template v-slot:item.expiresAt="{ item }">
+      <template #item.expiresAt="{ item }">
         <span>{{ formatDate(item.expiresAt) }}</span>
       </template>
 
-      <template v-slot:item.actions="{ item }">
-
-        <v-btn icon="mdi-delete" variant="text" @click="confirm(item.id)">
-
-        </v-btn>
+      <template #item.actions="{ item }">
+        <MenuDropdown @delete="deleteItem(item.id)"></MenuDropdown >
       </template>
 
       <template v-slot:no-data>

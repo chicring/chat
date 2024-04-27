@@ -47,5 +47,6 @@ declare module 'vue-router/auto-routes' {
     '/overview/UserUsageRatio': RouteRecordInfo<'/overview/UserUsageRatio', '/overview/UserUsageRatio', Record<never, never>, Record<never, never>>,
     '/setting/': RouteRecordInfo<'/setting/', '/setting', Record<never, never>, Record<never, never>>,
     '/user/': RouteRecordInfo<'/user/', '/user', Record<never, never>, Record<never, never>>,
+    '/user/AddPermission': RouteRecordInfo<'/user/AddPermission', '/user/AddPermission', Record<never, never>, Record<never, never>>,
   }
 }
