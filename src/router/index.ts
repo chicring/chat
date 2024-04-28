@@ -114,27 +114,38 @@ const routes = [
     }
   },
   {
-    path: '/chat',
     name: 'chat',
-    component: () => import('../pages/chat/index.vue'),
-    Children: [
+    path: '/chat',
+    component: () => import('../chatPages/index.vue'),
+    meta: {
+      roles: ['GUEST']
+    },
+    children: [
       {
-        name: 'chatSetting',
-        path: 'setting',
-        props: true,
-        component: () => import('@/pages/chat/setting/Setting.vue'),
+        name: 'chatPage',
+        path: '',
+        component: () => import('../chatPages/chat/index.vue'),
+        meta: {
+          roles: ['GUEST']
+        }
       }
     ]
   },
   {
     path: '/404',
     name: '404',
-    component: () => import('../components/404.vue')
+    component: () => import('../components/404.vue'),
+    meta: {
+      roles: ['GUEST']
+    }
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
     redirect: { name: '404' },
+    meta: {
+      roles: ['GUEST']
+    }
   }
   ]
 

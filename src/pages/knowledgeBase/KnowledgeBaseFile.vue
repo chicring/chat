@@ -45,6 +45,9 @@ function getColor (value: number) {
   }
 }
 
+function deleteItem(id : number) {
+  console.log(id)
+}
 
 onMounted(async () => {
   console.log(props.id)
@@ -84,11 +87,10 @@ onMounted(async () => {
         </v-chip>
       </template>
 
-      <template v-slot:item.actions="{ item }">
+      <template #item.actions="{ item }">
 
-        <v-btn icon="mdi-delete" variant="text" @click="console.log(item.id)">
+        <MenuDropdown @delete="deleteItem(item.id)"></MenuDropdown >
 
-        </v-btn>
       </template>
 
     </v-data-table>

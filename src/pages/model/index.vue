@@ -18,7 +18,7 @@ onMounted(async () => {
 
     <v-divider class="my-3"></v-divider>
     <v-row>
-      <v-col cols="4" v-for="(item, index) in list" :key="item.id">
+      <v-col cols="12" md="4" v-for="(item, index) in list" :key="item.id">
         <v-card height="100"
                 elevation="1"
                 rounded="lg"

@@ -24,8 +24,6 @@ declare module 'vue-router/auto-routes' {
     '/channel/': RouteRecordInfo<'/channel/', '/channel', Record<never, never>, Record<never, never>>,
     '/channel/AddchannelDialog': RouteRecordInfo<'/channel/AddchannelDialog', '/channel/AddchannelDialog', Record<never, never>, Record<never, never>>,
     '/channel/ChannelList': RouteRecordInfo<'/channel/ChannelList', '/channel/ChannelList', Record<never, never>, Record<never, never>>,
-    '/chat/': RouteRecordInfo<'/chat/', '/chat', Record<never, never>, Record<never, never>>,
-    '/chat/setting/Setting': RouteRecordInfo<'/chat/setting/Setting', '/chat/setting/Setting', Record<never, never>, Record<never, never>>,
     '/Dashboard': RouteRecordInfo<'/Dashboard', '/Dashboard', Record<never, never>, Record<never, never>>,
     '/knowledgeBase/': RouteRecordInfo<'/knowledgeBase/', '/knowledgeBase', Record<never, never>, Record<never, never>>,
     '/knowledgeBase/KnowledgeBaseFile': RouteRecordInfo<'/knowledgeBase/KnowledgeBaseFile', '/knowledgeBase/KnowledgeBaseFile', Record<never, never>, Record<never, never>>,

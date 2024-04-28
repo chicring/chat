@@ -97,7 +97,7 @@ function deleteItem(id : number){
     @update:options="loadItems"
   >
     <template #item.channelType="{ value }">
-      <v-chip rounded size="small" color="primary" label class="font-weight-medium" >
+      <v-chip rounded="lg" size="small" color="primary"  class="font-weight-medium" >
         {{ value }}
       </v-chip>
     </template>
