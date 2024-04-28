@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import {getEmailAvatar} from "../../util/EmailAvatar";
 
-import {store} from "../../store/store";
 </script>
 
 <template>
@@ -42,17 +42,25 @@ import {store} from "../../store/store";
       </v-list-item>
     </v-list>
 
-
-
-
     <template v-slot:append>
-      <div class="mb-3">
+      <v-row class="mb-3" no-gutters>
+        <v-col cols="9">
+          <v-card height="70">
+            <template #image>
+              <v-avatar :image="getEmailAvatar('3081044735@qq.com')"></v-avatar>
+            </template>
+            <v-card-text >
 
-        <v-btn variant="text">
-          <v-icon>mdi-cog</v-icon>
-        </v-btn>
-      </div>
-
+            </v-card-text>
+          </v-card>
+        </v-col>
+          <v-spacer></v-spacer>
+        <v-col cols="2" align-self="end">
+          <v-btn size="small" variant="plain" to="/chat/setting">
+            <v-icon>mdi-cog</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
     </template>
   </v-navigation-drawer>
 </template>

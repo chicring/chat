@@ -122,9 +122,26 @@ const routes = [
     },
     children: [
       {
-        name: 'chatPage',
+        name: 'newChat',
         path: '',
         component: () => import('../chatPages/chat/index.vue'),
+        meta: {
+          roles: ['GUEST']
+        }
+      },
+      {
+        name: 'chatPage',
+        path: ':id',
+        defineProps: true,
+        component: () => import('../chatPages/chat/index.vue'),
+        meta: {
+          roles: ['GUEST']
+        }
+      },
+      {
+        name: 'setting',
+        path: 'setting',
+        component: () => import('../chatPages/setting/index.vue'),
         meta: {
           roles: ['GUEST']
         }

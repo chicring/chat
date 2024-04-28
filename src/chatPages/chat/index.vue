@@ -76,13 +76,15 @@ const sendMessage = async () => {
         v-model="messages.input"
       >
         <template #append-inner>
-          <v-btn
-            color="primary"
-            text="发送"
-            variant="flat"
-            @click="sendMessage"
-          >
-          </v-btn>
+          <v-col align-self="end">
+            <v-btn
+              color="primary"
+              text="发送"
+              variant="flat"
+              @click="sendMessage"
+            >
+            </v-btn>
+          </v-col>
         </template>
       </v-textarea>
     </div>
