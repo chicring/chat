@@ -1,8 +1,11 @@
 import {useSettingStore} from "../../store/setting";
 
 import axios from "axios";
-import {OpenAiRequestBody} from "./types";
+import {OpenAiRequestBody, OpenAiResponseBody} from "./types";
 
+export type DataCallback = (data: string) => void;
+export type ErrorCallback = (error: Error) => void;
+export type ResponseCallback = (response: string) => void;
 
 class GptClient{
   private static instance: GptClient;
@@ -15,10 +18,20 @@ class GptClient{
   }
 
   async post(
-    data: OpenAiRequestBody
+    data: OpenAiRequestBody,
+    onData: DataCallback,
+    onResponse: ResponseCallback,
+    onError: ErrorCallback
   ){
+
+    const decoder = new TextDecoder("utf-8");
+
     const url = useSettingStore.state.baseApiUrl + "/v1/chat/completions";
-    const key  = useSettingStore.state.apiKey;
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + useSettingStore.state.apiKey
+    };
 
     data.stream = useSettingStore.state.config.stream
 
@@ -27,9 +40,7 @@ class GptClient{
       try {
         fetch(url, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: headers,
           body: JSON.stringify(data),
         }).then(response => {
           if (response.ok){
@@ -47,12 +58,12 @@ class GptClient{
             const lines = text.split("\n");
             for (const line of lines) {
               if (line.length > 0) {
-                const json = line.substring(6).trim();
+                const json = line.substring(5).trim();
                 if (json === "[DONE]") {
                   onResponse(finalResult);
                   break;
                 }
-                const result: openai.CreateChatCompletionDeltaResponse = JSON.parse(json);
+                const result: OpenAiResponseBody = JSON.parse(json);
                 finalResult += result.choices[0]?.delta.content || "";
                 onData(finalResult);
               }
@@ -62,10 +73,21 @@ class GptClient{
         }
 
       }catch (err: any) {
-        // onError(new Error(err));
-
+        onError(new Error(err));
       }
 
+    }else {
+      try {
+        const response = await axios.post(url, data, {
+          headers,
+        });
+        const result: OpenAiResponseBody = response.data;
+        onResponse(result.choices[0].message?.content!);
+      } catch (err: any) {
+        onError(new Error(err));
+      }
     }
   }
 }
+
+export default GptClient;

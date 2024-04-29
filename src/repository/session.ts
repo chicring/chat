@@ -2,6 +2,7 @@
 import { localStorageKey} from "./constant";
 import {Message} from "./message";
 import {Config,useSettingStore} from "../store/setting";
+import {getUuid} from "../util/auth";
 
 
 interface Session {
@@ -28,20 +29,27 @@ class SessionRepository {
     return sessions ? JSON.parse(sessions) : [];
   }
 
-  async createSession(): Promise<void> {
+  async createSession(): Promise<string> {
     const sessions = localStorage.getItem(localStorageKey.Sessions);
     const sessionsArray = sessions ? JSON.parse(sessions) : [];
 
+    const newMessage: Message = {
+      date: Math.floor(Date.now() / 1000),
+      role: "system",
+      content: "有什么可以帮你的吗",
+    }
+
     const newSession: Session = {
-      id: Math.random().toString(36).slice(2, 9),
+      id: getUuid(),
       topic: "随便聊聊",
-      messages: [],
-      lastUpdate: Date.now(),
+      messages: [newMessage],
+      lastUpdate: Math.floor(Date.now() / 1000),
       config: useSettingStore.state.config,
     };
 
     sessionsArray.push(newSession);
     localStorage.setItem(localStorageKey.Sessions, JSON.stringify(sessionsArray));
+    return newSession.id;
   }
 
   async deleteSessionById(id: string): Promise<void> {

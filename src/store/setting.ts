@@ -9,9 +9,10 @@ export interface Config {
   presence_penalty?: number;
   frequency_penalty?: number;
   top_p: number;
-  top_k: number;
+  top_k?: number;
   stop?: string;
   max_tokens: number;
+  max_history: number;
   tools?: [];
 }
 
@@ -28,7 +29,7 @@ export const useSettingStore  =reactive(
     async initSetting(useSettingStore) {
       useSettingStore.state.config = {
         stream: true,
-        model: "gpt-3.5-turbo",
+        model: "gpt-4",
         temperature: 0.7,
         top_p: 0.8,
         stop: null,
@@ -44,9 +45,10 @@ export const useSettingStore  =reactive(
         useSettingStore.state = JSON.parse(setting);
       } else {
         console.log("初始化设置");
-        await useSettingStore.initSetting(useSettingStore);
+        await this.initSetting(useSettingStore);
       }
     },
+
 
     async updateSetting(useSettingStore, setting) {
       useSettingStore.state = setting;

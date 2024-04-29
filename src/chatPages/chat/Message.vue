@@ -1,10 +1,11 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
+import OpenAI from "../../assets/icon/OpenAI.vue";
+import {Message} from "../../repository/message";
 
 const props = defineProps<{
-  content: string
-  role: string
+  message: Message
 }>();
 
 
@@ -19,24 +20,22 @@ const props = defineProps<{
 </script>
 
 <template>
-
-  <v-col v-if="props.role !== 'user'" style="display: flex; justify-content: start">
-
-    <v-icon>mdi-robot</v-icon>
-    <v-card flat rounded="xl">
-      <template v-slot:text>
-       {{props.content}}
+  <v-col v-if="props.message.role !== 'user'" style="display: flex; justify-content: start" class="pa-0">
+    <OpenAI></OpenAI>
+    <v-card flat rounded="xl" border="sm" class="ml-1">
+      <template #text>
+        {{props.message.content}}
       </template>
     </v-card>
   </v-col>
 
-  <v-col v-else style="display: flex; justify-content: end">
-    <v-card flat color="background-1" rounded="xl" class="mr-1">
-      <template v-slot:text>
-        {{props.content}}
+  <v-col v-else style="display: flex; justify-content: end" class="pa-0">
+    <v-card flat color="background-1" rounded="xl" class="mr-1" border="sm">
+      <template #text>
+        {{props.message.content}}
       </template>
     </v-card>
-    <v-icon>mdi-robot</v-icon>
+    <v-icon>mdi-account</v-icon>
   </v-col>
 
 

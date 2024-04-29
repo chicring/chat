@@ -9,6 +9,9 @@ const routes = [
   {
     path: '/',
     component: () => import('@/pages/index.vue'),
+    meta: {
+      roles: ['ADMIN', 'USER']
+    },
     children: [
       {
         name: 'overview',
@@ -131,8 +134,8 @@ const routes = [
       },
       {
         name: 'chatPage',
-        path: ':id',
-        defineProps: true,
+        path: ':sessionId',
+        props: true,
         component: () => import('../chatPages/chat/index.vue'),
         meta: {
           roles: ['GUEST']
@@ -184,8 +187,10 @@ router.beforeEach((to, from, next) => {
   }else if (!store.state.user.token){
     warn('请先登录')
     next({ name: 'login' })
+  }else {
+    next()
   }
-  next()
+
   // if ((to.name !== 'login' && to.name !== 'logon' )&& !store.state.user.token){
   //   warn('请先登录')
   //   next({ name: 'login' })

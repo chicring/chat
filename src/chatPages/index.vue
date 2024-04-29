@@ -5,11 +5,11 @@ import AppBar from "../chatPages/layout/AppBar.vue";
 import View from "../chatPages/layout/View.vue";
 
 import {useSettingStore} from "../store/setting";
-import {onMounted} from "vue";
+import {onBeforeMount} from "vue";
 
-onMounted(async () => {
-  await useSettingStore.actions.loadSetting(useSettingStore)
-})
+// onBeforeMount(async () => {
+//   await useSettingStore.actions.loadSetting(useSettingStore)
+// })
 </script>
 
 <template>

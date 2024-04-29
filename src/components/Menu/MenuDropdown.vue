@@ -5,6 +5,10 @@ import {ref} from "vue";
 
 import {info} from "../ToastMessage/Message";
 
+const prop = defineProps({
+  size: String,  // 定义 size 属性
+});
+
 const emit = defineEmits(['delete', 'edit']);
 
 const dialogVisible = ref(false);
@@ -40,19 +44,23 @@ const editItem = () => {
     @update:modelValue="deleteItem"
   ></confirm-dialog>
 
-  <v-menu>
+  <v-menu
+    open-on-hover
+    transition="scale-transition"
+  >
     <template v-slot:activator="{ props }">
       <v-btn
         color="primary"
         icon="mdi-dots-vertical"
         variant="text"
         v-bind="props"
+        :size="prop.size || 'default'"
       >
       </v-btn>
     </template>
 
     <v-card rounded="lg" width="130">
-      <v-list density="comfortable">
+      <v-list density="compact" nav>
         <slot></slot>
 
         <v-list-item @click="editItem">

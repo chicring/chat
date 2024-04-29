@@ -1,68 +1,79 @@
 <script setup lang="ts">
 
-import Message from "./Message.vue";
-import {ref, watch} from "vue";
+import Messages from "./Message.vue";
+import {onMounted, ref, watch} from "vue";
+import {useMessageStore} from "../../store/message";
+import {Message} from "../../repository/message";
+import {useSessionStore} from "../../store/session";
+import {Config} from "../../store/setting";
 
 interface Props {
-  sessionId: string;
+  sessionId?: string;
 }
-const messageList = ref([
-  {
-    id: 1,
-    role: "model",
-    content: "你好"
-  },
-  {
-    id: 2,
-    role: "user",
-    content: "你好"
-  }
-])
+const props = defineProps<Props>()
 
-const messages = ref({
-  input: "",
+const currentConfig = ref({} as Config)
+
+const input = ref({
+  content: "",
   tool: []
 })
 
 const sendMessage = async () => {
-  if (messages.value.input.trim() === "") {
+  if (input.value.content.trim() === "") {
     return;
   }
-  messageList.value.push({
-    id: messageList.value.length + 1,
+
+  let sessionID = props.sessionId;
+
+  const message : Message = {
     role: "user",
-    content: messages.value.input
-  });
+    content: input.value.content,
+    date: Math.floor(Date.now() / 1000),
+  }
+  input.value.content = "";
+  await useMessageStore.actions.addMessage(useMessageStore, message, sessionID);
 
-  messages.value.input = "";
-  setTimeout(() => {
-    messageList.value.push({
-      id: messageList.value.length + 1,
-      role: "model",
-      content: "你好"
-    });
-  }, 100);
-
+  await useMessageStore.actions.sendMessage(useMessageStore, useMessageStore.state.messageList, useMessageStore.state.currentConfig);
 }
+watch(() => useSessionStore.state.currentSessionId, (newVal) => {
+  useSessionStore.state.currentSessionId = newVal;
+})
+watch(() => props.sessionId, (newVal) => {
+  useSessionStore.state.currentSessionId = newVal;
+  useMessageStore.actions.loadMessagesBySessionId(useMessageStore, newVal);
+  input.value.content = "";
+})
 
+watch(() => useMessageStore.state.messageRely, (newVal) => {
+  if (newVal) {
+    console.log(newVal)
+
+  }
+})
 </script>
 
 <template>
-  <v-container fluid  class="d-flex flex-column" style="height: calc(100vh - 64px);">
-
+  <v-sheet class="d-flex flex-column" style="height: calc(100vh - 64px);">
     <v-list id="messageList" class="flex-grow-1" style="
                     height: calc(100vh - 115px);
                     overflow-y: scroll;
                     padding: 0;
                     margin: 0;"
     >
-      <v-list-item v-for="(item, index) in messageList" :key="item.id">
-        <Message :role="item.role" :content="item.content"></Message>
+      <v-list-item v-for="(item, index) in useMessageStore.state.messageList" :key="item.id">
+        <Messages :message="item"></Messages>
       </v-list-item>
+
+
     </v-list>
+    <v-card>
+      <template v-slot:text>
+        {{useMessageStore.state?.messageRely?.content}}
+      </template>
+    </v-card>
 
-
-    <div class="mt-10 mb-3">
+    <div class="mt-10 mb-3 mx-3">
 
       <v-textarea
         rounded="xl"
@@ -73,7 +84,7 @@ const sendMessage = async () => {
         rows="1"
         max-rows="10"
         hide-details
-        v-model="messages.input"
+        v-model="input.content"
       >
         <template #append-inner>
           <v-col align-self="end">
@@ -88,7 +99,7 @@ const sendMessage = async () => {
         </template>
       </v-textarea>
     </div>
-  </v-container>
+  </v-sheet>
 </template>
 
 <style scoped>
