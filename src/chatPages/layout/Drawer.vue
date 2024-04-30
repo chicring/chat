@@ -1,22 +1,16 @@
 <script setup lang="ts">
 import {getEmailAvatar} from "../../util/EmailAvatar";
 
-import {useSessionStore, Session} from "../../pininStore/session";
+import {useSessionStore, Session, Message} from "../../pininStore/session";
 import {formatDate} from "../../util/formatDate";
 import {useDebounce} from "../../util/debounceAndThrottle.";
 import {info} from "../../components/ToastMessage/Message";
 import {getUuid} from "../../util/auth";
-import {useSettingStore} from "../../store/setting";
-import {Message} from "../../pininStore/message";
+import {useSettingStore} from "../../pininStore/setting"
 import {storeToRefs} from "pinia";
 
-
-
 const sessionStore = useSessionStore();
-
-// const sessions = ref(sessionStore.sessions);
-// const currentSession = ref(sessionStore.currentSession);
-
+const settingStore = useSettingStore();
 const {sessions, currentSession} = storeToRefs(sessionStore);
 
 const creatSession = useDebounce(async () => {
@@ -40,7 +34,7 @@ const creatSession = useDebounce(async () => {
     topic: "随便聊聊",
     messages: [newMessage],
     lastUpdate: Math.floor(Date.now() / 1000),
-    config: useSettingStore.state.config,
+    config: settingStore.setting.config,
   };
 
   await sessionStore.addSession(newSession);
@@ -49,6 +43,7 @@ const creatSession = useDebounce(async () => {
 async function deleteSession(id: string) {
   await sessionStore.deleteSessionById(id);
 }
+
 
 </script>
 

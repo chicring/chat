@@ -24,7 +24,7 @@ export interface Config {
   tools?: [];
 }
 
-const useSettingStore = defineStore(
+export const useSettingStore = defineStore(
   'setting',
   () =>{
 
@@ -34,7 +34,7 @@ const useSettingStore = defineStore(
       setting.value.models = ['gpt-3.5-turbo','gpt-4'];
       setting.value.config = {
         stream: true,
-        model: "gpt-4",
+        model: "glm-4",
         temperature: 0.7,
         top_p: 0.8,
         stop: null,

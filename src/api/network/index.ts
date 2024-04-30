@@ -1,4 +1,3 @@
-import {useSettingStore} from "../../store/setting";
 
 import axios from "axios";
 import {OpenAiRequestBody, OpenAiResponseBody} from "./types";
@@ -26,14 +25,13 @@ class GptClient{
 
     const decoder = new TextDecoder("utf-8");
 
-    const url = useSettingStore.state.baseApiUrl + "/v1/chat/completions";
+    const url = "http://hk.hjong.cn:8080/v1/chat/completions";
 
     const headers = {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + useSettingStore.state.apiKey
+      Authorization: "Bearer " + "95aninjv.1"
     };
 
-    data.stream = useSettingStore.state.config.stream
 
     if (data.stream){
 

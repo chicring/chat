@@ -4,12 +4,14 @@ import Drawer from "../chatPages/layout/Drawer.vue";
 import AppBar from "../chatPages/layout/AppBar.vue";
 import View from "../chatPages/layout/View.vue";
 
-import {useSettingStore} from "../store/setting";
+import {useSettingStore} from "../pininStore/setting";
 import {onBeforeMount} from "vue";
 
-// onBeforeMount(async () => {
-//   await useSettingStore.actions.loadSetting(useSettingStore)
-// })
+const settingStore = useSettingStore();
+
+onBeforeMount(async () => {
+  await settingStore.initSetting();
+})
 </script>
 
 <template>

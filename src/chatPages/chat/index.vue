@@ -1,18 +1,22 @@
 <script setup lang="ts">
 
 import Messages from "./Message.vue";
-import {onMounted, ref, watch} from "vue";
-import {useMessageStore} from "../../store/message";
-import {Message} from "../../repository/message";
-import {useSessionStore} from "../../store/session";
-import {Config} from "../../store/setting";
+import {ref, watch} from "vue";
+import {Message, useSessionStore} from "../../pininStore/session";
+import {useSettingStore} from "../../pininStore/setting";
+import {storeToRefs} from "pinia";
+import Welcome from "./Welcome.vue";
+import OpenAI from "../../assets/icon/OpenAI.vue";
 
 interface Props {
   sessionId?: string;
 }
+
 const props = defineProps<Props>()
 
-const currentConfig = ref({} as Config)
+const settingStore = useSettingStore();
+const sessionStore = useSessionStore();
+const {currentSession, messageRely} = storeToRefs(sessionStore);
 
 const input = ref({
   content: "",
@@ -23,34 +27,35 @@ const sendMessage = async () => {
   if (input.value.content.trim() === "") {
     return;
   }
-
   let sessionID = props.sessionId;
-
   const message : Message = {
     role: "user",
     content: input.value.content,
     date: Math.floor(Date.now() / 1000),
   }
   input.value.content = "";
-  await useMessageStore.actions.addMessage(useMessageStore, message, sessionID);
-
-  await useMessageStore.actions.sendMessage(useMessageStore, useMessageStore.state.messageList, useMessageStore.state.currentConfig);
+  await sessionStore.addMessage2Session(message, sessionID);
+  await sessionStore.doChat(currentSession.value.messages, currentSession.value.config);
 }
-watch(() => useSessionStore.state.currentSessionId, (newVal) => {
-  useSessionStore.state.currentSessionId = newVal;
-})
-watch(() => props.sessionId, (newVal) => {
-  useSessionStore.state.currentSessionId = newVal;
-  useMessageStore.actions.loadMessagesBySessionId(useMessageStore, newVal);
+
+
+watch(() => props.sessionId, async (newVal) => {
+  const newSession = await sessionStore.findSessionById(newVal);
+
+  if (newSession) {
+    sessionStore.currentSession = newSession;
+  }else {
+    sessionStore.currentSession = {
+      id: null,
+      topic: "随便聊聊",
+      messages: [],
+      lastUpdate: Math.floor(Date.now() / 1000),
+      config: settingStore.setting.config,
+    }
+  }
   input.value.content = "";
 })
 
-watch(() => useMessageStore.state.messageRely, (newVal) => {
-  if (newVal) {
-    console.log(newVal)
-
-  }
-})
 </script>
 
 <template>
@@ -61,18 +66,24 @@ watch(() => useMessageStore.state.messageRely, (newVal) => {
                     padding: 0;
                     margin: 0;"
     >
-      <v-list-item v-for="(item, index) in useMessageStore.state.messageList" :key="item.id">
+      <v-list-item v-for="(item, index) in currentSession.messages" :key="item.id">
         <Messages :message="item"></Messages>
       </v-list-item>
 
-
+      <v-list-item v-if="messageRely">
+        <v-col style="display: flex; justify-content: start" class="pa-0">
+          <OpenAI></OpenAI>
+          <v-card flat rounded="xl" border="sm" class="ml-1">
+            <template v-slot:text>
+              {{messageRely.content}}
+            </template>
+          </v-card>
+        </v-col>
+      </v-list-item>
     </v-list>
-    <v-card>
-      <template v-slot:text>
-        {{useMessageStore.state?.messageRely?.content}}
-      </template>
-    </v-card>
 
+
+    <welcome v-if="!currentSession.id"></welcome>
     <div class="mt-10 mb-3 mx-3">
 
       <v-textarea
@@ -92,7 +103,7 @@ watch(() => useMessageStore.state.messageRely, (newVal) => {
               color="primary"
               text="发送"
               variant="flat"
-              @click="sendMessage"
+              @click.stop="sendMessage"
             >
             </v-btn>
           </v-col>
